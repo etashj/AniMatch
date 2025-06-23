@@ -8,6 +8,17 @@ import { Theme } from './settingsModal.tsx'
 function App() {
   const [settingsVisible, setVisible] = useState(false)
   const [theme, setTheme] = useState(Theme.System);
+  const [hideMature, setMature] = useState( true );
+  const [hideEcchi, setEcchi] = useState( true );  
+
+  function toggleMature() {
+    setMature(!hideMature); 
+    localStorage.setItem('hideMature', !hideMature); 
+  }
+  function toggleEcchi() {
+    setEcchi(!hideEcchi); 
+    localStorage.setItem('hideEcchi', !hideEcchi); 
+  }
 
   function applyTheme( t : Theme ) {
     setTheme(t); 
@@ -39,6 +50,13 @@ function App() {
     } else {
       applyTheme(Theme.Dark); // or 'system' as your default
     }
+
+    if (localStorage.getItem('hideMature') != null) {
+      setMature(localStorage.getItem('hideMature').toLowerCase()==='true' ); 
+    }
+    if (localStorage.getItem('hideEcchi') != null) {
+      setEcchi(localStorage.getItem('hideEcchi').toLowerCase()==='true' ); 
+    }
   }, []);
 
   return (
@@ -61,7 +79,7 @@ function App() {
           </div>
         </div>
       </div>
-      <Settings visible={settingsVisible} onClose={() => setTimeout(() => {setVisible(false);}, 100)} theme={theme} setTheme={(theme: Theme) => {applyTheme(theme);}} />
+      <Settings visible={settingsVisible} onClose={() => setTimeout(() => {setVisible(false);}, 100)} theme={theme} setTheme={(theme: Theme) => {applyTheme(theme);}} hideMature={hideMature} hideEcchi={hideEcchi} toggleMature={toggleMature} toggleEcchi={toggleEcchi}/>
     </>
   )
 }
