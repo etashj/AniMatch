@@ -11,7 +11,7 @@ function App() {
   const [hideEcchi, setEcchi] = useState( true );  
   const [mode, setMode] = useState(false); 
 
-  function toggleMode() { setMode(!mode); }
+  function toggleMode() { setMode(!mode); document.title = mode ? "AniMatch" : "MangaMatch"; }
 
   function toggleMature() {
     setMature(!hideMature); 
@@ -73,15 +73,15 @@ function App() {
           >
             <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-checked:translate-x-6" />
           </Switch>
-          <h1 className="font-header font-bold text-4xl text-[#1D2126] dark:text-zinc-200">
+          <h1 className="font-header font-bold sm:text-4xl text-2xl text-[#1D2126] dark:text-zinc-200 ">
             {mode ? "Manga" : "Ani"}Match
           </h1>
           </div>
           <div id='btnCont' className="font-sans flex flex-row flow-nowrap justify-left ">
-            <button className='text-zinc-200 bg-[#1D2126] dark:bg-[#24272a] px-4 rounded-2xl sm:rounded-2xl hover:shadow-xl/20 dark:hover:shadow-indigo-500 transition duration-300 active:shadow-md/40'>
-              <div className='flex gap-2 flex-row flex-nowrap justify-between items-center'>
+            <button className='text-zinc-200 bg-[#1D2126] dark:bg-[#24272a] px-4 sm:px-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/20 dark:hover:shadow-indigo-500 transition duration-300 active:shadow-md/40'>
+              <div className='flex gap-2 sm:gap-0 flex-row flex-nowrap justify-between items-center'>
                 <p className='font-bold align-middle hidden sm:inline'>Sign in with AniList</p>
-                <img className='h-8 w-8 object-cover' src='src/assets/anilist.svg'></img>
+                <img className='h-8 w-8 object-cover md:w-0' src='src/assets/anilist.svg'></img>
               </div>
             </button>
             <button className='bg-indigo-500 px-1 mx-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/20 transition duration-300 active:shadow-md/40 dark:hover:shadow-indigo-500 ' onClick={() => setTimeout(() => {setVisible(true);}, 100)}>
