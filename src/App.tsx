@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Switch } from '@headlessui/react'
 import './App.css'
 import Settings from './settingsModal.tsx'
 import { Theme } from './settingsModal.tsx'
@@ -10,6 +9,9 @@ function App() {
   const [theme, setTheme] = useState(Theme.System);
   const [hideMature, setMature] = useState( true );
   const [hideEcchi, setEcchi] = useState( true );  
+  const [mode, setMode] = useState(false); 
+
+  function toggleMode() { setMode(!mode); }
 
   function toggleMature() {
     setMature(!hideMature); 
@@ -63,8 +65,19 @@ function App() {
     <>
       <div id='mainCont' className={`${settingsVisible? 'blur-xs' : ''} transition duration-300`}>
         <div id='header' className='flex flex-row flex-nowrap justify-between'>
-          <h1 className="font-header font-bold text-4xl text-[#1D2126] dark:text-zinc-200">AniMatch</h1>
-          <div id='btnCont' className="font-sans flex flex-row flow-nowrap justify-left">
+          <div className="flex flex-row flow-nowrap justify-left items-center">
+          <Switch
+            checked={mode}
+            onChange={toggleMode}
+            className="group inline-flex h-6 w-11 items-center rounded-full bg-indigo-500 transition rotate-90 scale-75"
+          >
+            <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-checked:translate-x-6" />
+          </Switch>
+          <h1 className="font-header font-bold text-4xl text-[#1D2126] dark:text-zinc-200">
+            {mode ? "Manga" : "Ani"}Match
+          </h1>
+          </div>
+          <div id='btnCont' className="font-sans flex flex-row flow-nowrap justify-left ">
             <button className='text-zinc-200 bg-[#1D2126] dark:bg-[#24272a] px-4 rounded-2xl sm:rounded-2xl hover:shadow-xl/20 dark:hover:shadow-indigo-500 transition duration-300 active:shadow-md/40'>
               <div className='flex gap-2 flex-row flex-nowrap justify-between items-center'>
                 <p className='font-bold align-middle hidden sm:inline'>Sign in with AniList</p>
