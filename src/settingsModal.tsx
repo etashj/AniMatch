@@ -23,7 +23,7 @@ export default function Settings( {visible, onClose, theme, setTheme, hideMature
   
   return (
     <div className="dark:text-zinc-200 bg-zinc-200 dark:bg-[#141112] px-2 py-2 rounded-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 fixed flex-column flex-nowrap justify-between space-y-2 max-sm:w-75">
-      <p className='mx-3 font-bold dark:text-zinc-200 mt-3'>Settings</p>
+      <p className='mx-3 font-header dark:text-zinc-200 mt-3'>Settings</p>
       <div className='flex-column flex-nowrap justify-between space-y-1'>
         <div className='flex flex-row flex-nowrap justify-evenly mx-4 space-x-5 items-center '>
           <p className="p-2 rounded-xl ">Theme</p>
