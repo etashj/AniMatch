@@ -1,11 +1,13 @@
 import SettingsSwitch from './settingsElems/switch.tsx';
 import ThemeDrop from './settingsElems/themeDrop.tsx'
 
-export enum Theme {
-  Light = 'Light',
-  Dark = 'Dark',
-  System = 'System',
-}
+export const Theme = {
+  Light : 'Light',
+  Dark : 'Dark',
+  System : 'System',
+} as const
+
+export type Theme = typeof Theme[keyof typeof Theme]
 
 type Props = {
   visible: boolean;

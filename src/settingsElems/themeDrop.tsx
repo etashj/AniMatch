@@ -3,7 +3,7 @@ import { Theme } from '../settingsModal.tsx'
 
 type Props = {
   theme: Theme; 
-  setTheme: (Theme) => void; 
+  setTheme: (t: Theme) => void; 
 }
 
 export default function ThemeDrop( {theme, setTheme} : Props) {

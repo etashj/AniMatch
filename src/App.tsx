@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react'
-import { Switch } from '@headlessui/react'
-import './App.css'
-import Settings from './settingsModal.tsx'
-import { Theme } from './settingsModal.tsx'
+import { useState, useEffect } from 'react';
+import { Switch } from '@headlessui/react';
+import './App.css';
+import Settings from './settingsModal.tsx';
+import { Theme } from './settingsModal.tsx';
+import SettingsIcon from './assets/settings.svg';
+import AniListLogo from './assets/anilist.svg';
 
 function App() {
   const [settingsVisible, setVisible] = useState(false)
-  const [theme, setTheme] = useState(Theme.System);
+  const [theme, setTheme] = useState<Theme>(Theme.System);
   const [hideMature, setMature] = useState( true );
   const [hideEcchi, setEcchi] = useState( true );  
   const [mode, setMode] = useState(false); 
@@ -15,11 +17,11 @@ function App() {
 
   function toggleMature() {
     setMature(!hideMature); 
-    localStorage.setItem('hideMature', !hideMature); 
+    localStorage.setItem('hideMature', (!hideMature).toString()); 
   }
   function toggleEcchi() {
     setEcchi(!hideEcchi); 
-    localStorage.setItem('hideEcchi', !hideEcchi); 
+    localStorage.setItem('hideEcchi', (!hideEcchi).toString()); 
   }
 
   function applyTheme( t : Theme ) {
@@ -48,16 +50,16 @@ function App() {
   useEffect(() => {
     const saved = localStorage.getItem('theme'); 
     if (saved) {
-      applyTheme(Theme[saved]);
+      applyTheme(saved as Theme);
     } else {
       applyTheme(Theme.Dark); // or 'system' as your default
     }
 
     if (localStorage.getItem('hideMature') != null) {
-      setMature(localStorage.getItem('hideMature').toLowerCase()==='true' ); 
+      setMature(localStorage.getItem('hideMature')!.toLowerCase()==='true' ); 
     }
     if (localStorage.getItem('hideEcchi') != null) {
-      setEcchi(localStorage.getItem('hideEcchi').toLowerCase()==='true' ); 
+      setEcchi(localStorage.getItem('hideEcchi')!.toLowerCase()==='true' ); 
     }
   }, []);
 
@@ -81,12 +83,12 @@ function App() {
             <button className='text-zinc-200 bg-[#1D2126] dark:bg-[#24272a] px-4 sm:px-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/20 dark:hover:shadow-indigo-500 transition duration-300 active:shadow-md/40'>
               <div className='flex gap-2 sm:gap-0 flex-row flex-nowrap justify-between items-center m-1'>
                 <p className='font-bold align-middle hidden sm:inline mr-1'>Sign in with AniList</p>
-                <img className='h-8 w-8 object-cover' src='src/assets/anilist.svg'></img>
+                <img className='h-8 w-8 object-cover' src={AniListLogo} alt='AniList Logo'></img>
               </div>
             </button>
-            <button className='bg-indigo-500 px-1 mx-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/20 transition duration-300 active:shadow-md/40 dark:hover:shadow-indigo-500 ' onClick={() => setTimeout(() => {setVisible(true);}, 100)}>
+            <button className='bg-indigo-500 px-2 mx-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/20 transition duration-300 active:shadow-md/40 dark:hover:shadow-indigo-500 ' onClick={() => setTimeout(() => {setVisible(true);}, 100)}>
               <div className='flex gap-2 flex-row flex-nowrap justify-between items-center'>
-                <img className='h-8 w-8 object-cover' src='src/assets/settings.svg'></img>
+                <img className='h-8 w-8 object-cover' src={SettingsIcon} alt='Settings'></img>
               </div>
             </button>
           </div>
