@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Switch } from '@headlessui/react';
 import './App.css';
 import Settings from './settingsModal.tsx';
 import { Theme } from './settingsModal.tsx';
+import Card from './Card.tsx';
+import { motion } from "motion/react"
 import SettingsIcon from './assets/settings.svg';
 import AniListLogo from './assets/anilist.svg';
 
@@ -12,6 +14,7 @@ function App() {
   const [hideMature, setMature] = useState( true );
   const [hideEcchi, setEcchi] = useState( true );  
   const [mode, setMode] = useState(false); 
+  const constraintsRef = useRef(null)
 
   function toggleMode() { setMode(!mode); document.title = mode ? "AniMatch" : "MangaMatch"; }
 
@@ -65,34 +68,37 @@ function App() {
 
   return (
     <>
-      <div id='mainCont' className={`${settingsVisible? 'blur-xs' : ''} transition duration-300`}>
-        <div id='header' className='flex flex-row flex-nowrap justify-between'>
+      <div id='mainCont' className={`${settingsVisible? 'blur-xs' : ''} transition duration-200 flex flex-col h-full `}>
+        <div id='header' className='flex flex-row flex-nowrap justify-between mb-4'>
           <div className="flex flex-row flow-nowrap justify-left items-center">
           <Switch
             checked={mode}
             onChange={toggleMode}
             className="group inline-flex h-6 w-11 items-center rounded-full bg-indigo-500 transition rotate-90 scale-75"
           >
-            <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-checked:translate-x-6" />
+            <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-checked:translate-x-6 group-hover:scale-115" />
           </Switch>
           <h1 className="font-header sm:text-5xl text-2xl text-[#1D2126] dark:text-zinc-200 ">
             {mode ? "Manga" : "Ani"}Match
           </h1>
           </div>
           <div id='btnCont' className="font-sans flex flex-row flow-nowrap justify-left ">
-            <button className='text-zinc-200 bg-[#1D2126] dark:bg-[#24272a] px-4 sm:px-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/20 dark:hover:shadow-indigo-500 transition duration-300 active:shadow-md/40'>
+            <button className='text-zinc-200 bg-[#1D2126] dark:bg-[#24272a] px-4 sm:px-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/20 dark:hover:shadow-indigo-500 transition duration-200 active:shadow-md/40 hover:scale-101'>
               <div className='flex gap-2 sm:gap-0 flex-row flex-nowrap justify-between items-center m-1'>
                 <p className='font-bold align-middle hidden sm:inline mr-1'>Sign in with AniList</p>
                 <img className='h-8 w-8 object-cover' src={AniListLogo} alt='AniList Logo'></img>
               </div>
             </button>
-            <button className='bg-indigo-500 px-2 mx-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/20 transition duration-300 active:shadow-md/40 dark:hover:shadow-indigo-500 ' onClick={() => setTimeout(() => {setVisible(true);}, 100)}>
+            <button className='bg-indigo-500 px-2 mx-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/20 transition duration-200 active:shadow-md/40 dark:hover:shadow-indigo-500 hover:scale-101' onClick={() => setTimeout(() => {setVisible(true);}, 100)}>
               <div className='flex gap-2 flex-row flex-nowrap justify-between items-center'>
                 <img className='h-8 w-8 object-cover' src={SettingsIcon} alt='Settings'></img>
               </div>
             </button>
           </div>
         </div>
+        <motion.div ref={constraintsRef} id='cardArea' className='w-full h-full shrink flex justify-center items-center h-screen'>
+          <Card constraintRef = {constraintsRef} />
+        </motion.div >
       </div>
       <Settings visible={settingsVisible} onClose={() => setTimeout(() => {setVisible(false);}, 100)} theme={theme} setTheme={(theme: Theme) => {applyTheme(theme);}} hideMature={hideMature} hideEcchi={hideEcchi} toggleMature={toggleMature} toggleEcchi={toggleEcchi}/>
     </>
