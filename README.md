@@ -8,7 +8,9 @@
 
 ![React Badge](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![Tailwind Badge](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Vite Badge](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E) ![Typescript Badge](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 
-![MIT License Badge](https://img.shields.io/badge/MIT-green?style=for-the-badge)
+![MIT License Badge](https://img.shields.io/badge/MIT-green?style=for-the-badge) 
+
+![Not by AI](https://notbyai.fyi/img/written-by-human-not-by-ai-white.svg)
 
 > [!NOTE]
 > This project is still being actively developed and is by no means fully functional or fleshed out. Check back later for updates. 
