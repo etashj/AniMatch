@@ -96,8 +96,9 @@ function App() {
             </button>
           </div>
         </div>
-        <motion.div ref={constraintsRef} id='cardArea' className='w-full h-full shrink flex justify-center items-center h-screen'>
-          <Card constraintRef = {constraintsRef} />
+        <motion.div ref={constraintsRef} id='cardArea' className='w-full h-full shrink flex justify-center items-center h-screen relative'>
+          <Card constraintRef = {constraintsRef} title_en="number 1" />
+          <Card constraintRef = {constraintsRef} title_en="number 2" />
         </motion.div >
       </div>
       <Settings visible={settingsVisible} onClose={() => setTimeout(() => {setVisible(false);}, 100)} theme={theme} setTheme={(theme: Theme) => {applyTheme(theme);}} hideMature={hideMature} hideEcchi={hideEcchi} toggleMature={toggleMature} toggleEcchi={toggleEcchi}/>

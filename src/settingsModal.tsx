@@ -24,7 +24,7 @@ export default function Settings( {visible, onClose, theme, setTheme, hideMature
   if (!visible) return null;
   
   return (
-    <div className="dark:text-zinc-200 bg-zinc-200 dark:bg-[#141112] px-2 py-2 rounded-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 fixed flex-column flex-nowrap justify-between space-y-2 max-sm:w-2/5 min-w-[240px]">
+    <div className="dark:text-zinc-200 bg-zinc-200 dark:bg-[#141112] px-2 py-2 rounded-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 fixed flex-column flex-nowrap justify-between space-y-2 max-sm:w-2/5 min-w-[240px] shadow-xl dark:shadow-black-900/30 shadow-black-900 ">
       <p className='mx-3 font-header dark:text-zinc-200 mt-3'>Settings</p>
       <div className='flex-column flex-nowrap justify-between space-y-1'>
         <div className='flex flex-row flex-nowrap justify-evenly mx-4 space-x-5 items-center'>
