@@ -7,6 +7,7 @@ import Card from './Card.tsx';
 import { motion } from "motion/react"
 import SettingsIcon from './assets/settings.svg';
 import AniListLogo from './assets/anilist.svg';
+import UndoIcon from './assets/undo.svg';
 
 function App() {
   const [settingsVisible, setVisible] = useState(false)
@@ -16,6 +17,7 @@ function App() {
   const [mode, setMode] = useState(false); 
   const constraintsRef = useRef(null)
 
+  
   function toggleMode() { setMode(!mode); document.title = mode ? "AniMatch" : "MangaMatch"; }
 
   function toggleMature() {
@@ -96,9 +98,15 @@ function App() {
             </button>
           </div>
         </div>
+        <button className='flex gap-2 flex-row flex-nowrap justify-between px-2 items-center h-12 w-12 bg-indigo-500  mx-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/30 transition duration-200 active:shadow-md/40 dark:hover:shadow-indigo-500 hover:scale-101 fixed bottom-10 right-10'>
+            <img className='h-7 w-7 object-cover' src={UndoIcon} alt='Undo'></img>
+        </button>
+        <p className='tracking-wider font-header text-zinc-500 text-lg fixed rotate-270 left-5 top-1/2'>not interested :/</p>
+        <p className='tracking-wider font-header text-zinc-500 text-lg fixed rotate-90 right-5 top-1/2'>interested :)</p>
         <motion.div ref={constraintsRef} id='cardArea' className='w-full h-full shrink flex justify-center items-center h-screen relative'>
-          <Card constraintRef = {constraintsRef} title_en="number 1" />
-          <Card constraintRef = {constraintsRef} title_en="number 2" />
+          <Card constraintRef = {constraintsRef} id={66} />
+          <Card constraintRef = {constraintsRef} id={165287} />
+          <Card constraintRef = {constraintsRef} id={30104} />
         </motion.div >
       </div>
       <Settings visible={settingsVisible} onClose={() => setTimeout(() => {setVisible(false);}, 100)} theme={theme} setTheme={(theme: Theme) => {applyTheme(theme);}} hideMature={hideMature} hideEcchi={hideEcchi} toggleMature={toggleMature} toggleEcchi={toggleEcchi}/>
