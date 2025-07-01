@@ -103,8 +103,6 @@ function App() {
         <button className='flex gap-2 flex-row flex-nowrap justify-between px-2 items-center h-12 w-12 bg-indigo-500  mx-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/30 transition duration-200 active:shadow-md/40 dark:hover:shadow-indigo-500 hover:scale-101 fixed bottom-10 right-10'>
             <img className='h-7 w-7 object-cover' src={UndoIcon} alt='Undo'></img>
         </button>
-        <p className='tracking-wider font-header text-zinc-500 text-lg fixed rotate-270 left-5 top-1/2'>not interested :/</p>
-        <p className='tracking-wider font-header text-zinc-500 text-lg fixed rotate-90 right-5 top-1/2'>interested :)</p>
         <motion.div id='cardArea' className='w-full h-full shrink flex justify-center items-center h-screen relative'>
       <Suspense fallback={<div>Loading...</div>}>
           <Card id={66} />
@@ -113,6 +111,8 @@ function App() {
       </Suspense>
         </motion.div >
       </div>
+        <p className='z-50 tracking-wider font-header text-zinc-500 text-lg fixed rotate-270 -left-14 top-1/2 '>not interested :/</p>
+        <p className='z-50 tracking-wider font-header text-zinc-500 text-lg fixed rotate-90 -right-12 top-1/2'>interested :)</p>
       <Suspense fallback={<div>Loading...</div>}>
       <Settings visible={settingsVisible} onClose={() => setTimeout(() => {setVisible(false);}, 100)} theme={theme} setTheme={(theme: Theme) => {applyTheme(theme);}} hideMature={hideMature} hideEcchi={hideEcchi} toggleMature={toggleMature} toggleEcchi={toggleEcchi}/>
       </Suspense>
