@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useEffect, useRef } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import './App.css';
 import { Switch } from '@headlessui/react';
 
@@ -18,7 +18,6 @@ function App() {
   const [hideMature, setMature] = useState( true );
   const [hideEcchi, setEcchi] = useState( true );  
   const [mode, setMode] = useState(false); 
-  const constraintsRef = useRef(null)
 
   
   function toggleMode() { setMode(!mode); document.title = mode ? "AniMatch" : "MangaMatch"; }
@@ -106,11 +105,11 @@ function App() {
         </button>
         <p className='tracking-wider font-header text-zinc-500 text-lg fixed rotate-270 left-5 top-1/2'>not interested :/</p>
         <p className='tracking-wider font-header text-zinc-500 text-lg fixed rotate-90 right-5 top-1/2'>interested :)</p>
-        <motion.div ref={constraintsRef} id='cardArea' className='w-full h-full shrink flex justify-center items-center h-screen relative'>
+        <motion.div id='cardArea' className='w-full h-full shrink flex justify-center items-center h-screen relative'>
       <Suspense fallback={<div>Loading...</div>}>
-          <Card constraintRef = {constraintsRef} id={66} />
-          <Card constraintRef = {constraintsRef} id={165287} />
-          <Card constraintRef = {constraintsRef} id={30104} />
+          <Card id={66} />
+          <Card id={165287} />
+          <Card id={30104} />
       </Suspense>
         </motion.div >
       </div>

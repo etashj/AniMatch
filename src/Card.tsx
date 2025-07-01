@@ -1,12 +1,11 @@
 import { motion, useAnimation } from "motion/react"
-import { useState } from 'react'
 import { useQuery, gql } from '@apollo/client';
 
 type Props = {
   id: number, 
-  constraintRef: any
 }
 
+/*
 type hehe = {
   title_en: string, 
   title_romanji: string, 
@@ -25,6 +24,7 @@ type hehe = {
   type: string, 
   constraintRef: any,
 }
+*/
 
 type Tag = {
   name: string; 
@@ -40,11 +40,7 @@ function formatNumber(num: number) {
 
 export default function Card( {
     id,
-    constraintRef, 
   } : Props) {
-  const [activeDirection, setActiveDirection] = useState<"x" | "y" | null>(
-        null
-    )
   const animControls = useAnimation();
   const randomDeg = Math.floor(Math.random() * 20) - 10; // -5 to 5 deg
  
@@ -115,7 +111,6 @@ export default function Card( {
                 animate = {animControls}
                 drag  
                 onDragEnd={(_, info) => {
-                    setActiveDirection(null);
                     if (Math.abs(info.offset.x) > 200 ) {
                         offScreen('x', Math.sign(info.offset.x)); 
                         //console.log("Swiped to the " + ((info.offset.x > 0) ? "right" : "left"));
