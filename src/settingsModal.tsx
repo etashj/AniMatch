@@ -1,13 +1,6 @@
 import SettingsSwitch from './settingsElems/switch.tsx';
 import ThemeDrop from './settingsElems/themeDrop.tsx'
-
-export const Theme = {
-  Light : 'Light',
-  Dark : 'Dark',
-  System : 'System',
-} as const
-
-export type Theme = typeof Theme[keyof typeof Theme]
+import Theme from './settingsElems/theme.tsx';
 
 type Props = {
   visible: boolean;

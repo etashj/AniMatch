@@ -98,7 +98,7 @@ export default function Card( {
   `; 
 
   const { loading, error, data } = useQuery(FETCH_DATA, {variables:{mediaId:id}});
-  console.log(data); 
+  //console.log(data); 
 
   function offScreen (activeDir: string, sign: number) {
     if (activeDir == 'x') { 
@@ -118,7 +118,7 @@ export default function Card( {
                     setActiveDirection(null);
                     if (Math.abs(info.offset.x) > 200 ) {
                         offScreen('x', Math.sign(info.offset.x)); 
-                        console.log("Swiped to the " + ((info.offset.x > 0) ? "right" : "left"));
+                        //console.log("Swiped to the " + ((info.offset.x > 0) ? "right" : "left"));
 
                     } else {
                         // Animate to be offscreen

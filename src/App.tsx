@@ -1,10 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
-import { Switch } from '@headlessui/react';
+import React, { Suspense, useState, useEffect, useRef } from 'react';
 import './App.css';
-import Settings from './settingsModal.tsx';
-import { Theme } from './settingsModal.tsx';
-import Card from './Card.tsx';
+import { Switch } from '@headlessui/react';
+
+const Settings = React.lazy(() => import('./settingsModal.tsx'));
+import Theme from './settingsElems/theme.tsx';
+
+const Card = React.lazy(()=> import('./Card.tsx'));
 import { motion } from "motion/react"
+
 import SettingsIcon from './assets/settings.svg';
 import AniListLogo from './assets/anilist.svg';
 import UndoIcon from './assets/undo.svg';
@@ -104,12 +107,16 @@ function App() {
         <p className='tracking-wider font-header text-zinc-500 text-lg fixed rotate-270 left-5 top-1/2'>not interested :/</p>
         <p className='tracking-wider font-header text-zinc-500 text-lg fixed rotate-90 right-5 top-1/2'>interested :)</p>
         <motion.div ref={constraintsRef} id='cardArea' className='w-full h-full shrink flex justify-center items-center h-screen relative'>
+      <Suspense fallback={<div>Loading...</div>}>
           <Card constraintRef = {constraintsRef} id={66} />
           <Card constraintRef = {constraintsRef} id={165287} />
           <Card constraintRef = {constraintsRef} id={30104} />
+      </Suspense>
         </motion.div >
       </div>
+      <Suspense fallback={<div>Loading...</div>}>
       <Settings visible={settingsVisible} onClose={() => setTimeout(() => {setVisible(false);}, 100)} theme={theme} setTheme={(theme: Theme) => {applyTheme(theme);}} hideMature={hideMature} hideEcchi={hideEcchi} toggleMature={toggleMature} toggleEcchi={toggleEcchi}/>
+      </Suspense>
     </>
   )
 }

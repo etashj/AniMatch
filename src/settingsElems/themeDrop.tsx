@@ -1,5 +1,5 @@
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Theme } from '../settingsModal.tsx'
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import Theme from './theme.tsx';
 
 type Props = {
   theme: Theme; 
