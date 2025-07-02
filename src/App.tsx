@@ -20,11 +20,11 @@ function App() {
   const [hideEcchi, setEcchi] = useState( true );  
   const [mode, setMode] = useState(false); 
 
-  const [animeIds, setAnimeIds] = useState(localStorage.getItem('anime-ids')==null ? [ 16498, 1535, 66 ] : JSON.parse(localStorage.getItem('anime-ids')!) ); 
-  const [mangaIds, setMangaIds] = useState(localStorage.getItem('manga-ids')==null ? [30002, 105778, 30104] : JSON.parse(localStorage.getItem('manga-ids')!) ); 
+  const [animeIds, setAnimeIds] = useState(localStorage.getItem('anime-ids')==null || localStorage.getItem('anime-ids')==JSON.stringify([]) ? [ 16498, 1535, 66 ] : JSON.parse(localStorage.getItem('anime-ids')!) ); 
+  const [mangaIds, setMangaIds] = useState(localStorage.getItem('manga-ids')==null || localStorage.getItem('manga-ids')==JSON.stringify([]) ? [30002, 105778, 30104] : JSON.parse(localStorage.getItem('manga-ids')!) ); 
 
-  const animeHistory =useRef<number[]>( localStorage.getItem('anime-history')==null ? [] : JSON.parse(localStorage.getItem('anime-history')!) );
-  const mangaHistory =useRef<number[]>( localStorage.getItem('manga-history')==null ? [] : JSON.parse(localStorage.getItem('manga-history')!) );
+  const animeHistory =useRef<number[]>( localStorage.getItem('anime-history')==null || localStorage.getItem('anime-ids')==JSON.stringify([])? [] : JSON.parse(localStorage.getItem('anime-history')!) );
+  const mangaHistory =useRef<number[]>( localStorage.getItem('manga-history')==null || localStorage.getItem('manga-ids')==JSON.stringify([])? [] : JSON.parse(localStorage.getItem('manga-history')!) );
 
   const animeQueue =useRef<number[]>( localStorage.getItem('anime-queue')==null ? [] : JSON.parse(localStorage.getItem('anime-queue')!) );
   const mangaQueue =useRef<number[]>( localStorage.getItem('manga-queue')==null ? [] : JSON.parse(localStorage.getItem('manga-queue')!) );
