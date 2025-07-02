@@ -36,10 +36,10 @@ export default function Settings( {visible, onClose, theme, setTheme, hideMature
         </div>
       </div>
       <div className='flex-row gap-2'>
-        <Link to='/about'>
+        <Link to='/extra/about'>
           <button className='mx-1 w-1/3 font-bold text-zinc-200 bg-indigo-500 px-2 py-1 rounded-md hover:shadow-lg/20 transition duration-300 active:shadow-sm/40 dark:hover:shadow-indigo-500 hover:scale-101'>about</button>
         </Link>
-        <Link to='/issue'>
+        <Link to='/extra/issue'>
           <button className='w-1/3 mx-1 font-bold text-zinc-200 bg-indigo-500 px-2 py-1 rounded-md hover:shadow-lg/20 transition duration-300 active:shadow-sm/40 dark:hover:shadow-indigo-500 hover:scale-101'>issue</button>
         </Link>
       </div>

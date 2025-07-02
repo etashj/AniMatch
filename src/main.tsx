@@ -22,8 +22,8 @@ createRoot(document.getElementById('root')!).render(
         <Suspense fallback='<div>loading...</div>'>
           <Routes>
             <Route path='/' element={<App />}></Route>
-            <Route path='/about' element={<About />}></Route>
-            <Route path='/issue' element={<Issue />}></Route>
+            <Route path='/extra/about' element={<About />}></Route>
+            <Route path='/extra/issue' element={<Issue />}></Route>
           </Routes>
         </Suspense>
       </ApolloProvider>
