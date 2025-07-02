@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 import { Switch } from '@headlessui/react';
 
@@ -12,6 +12,7 @@ import SettingsIcon from './assets/settings.svg';
 import AniListLogo from './assets/anilist.svg';
 import UndoIcon from './assets/undo.svg';
 
+
 function App() {
   const [settingsVisible, setVisible] = useState(false)
   const [theme, setTheme] = useState<Theme>(Theme.System);
@@ -19,9 +20,39 @@ function App() {
   const [hideEcchi, setEcchi] = useState( true );  
   const [mode, setMode] = useState(false); 
 
-  const [ids, setIds] = useState([66, 165287, 30104]); 
+  const [animeIds, setAnimeIds] = useState(localStorage.getItem('anime-ids')==null ? [ 16498, 1535, 66 ] : JSON.parse(localStorage.getItem('anime-ids')!) ); 
+  const [mangaIds, setMangaIds] = useState(localStorage.getItem('manga-ids')==null ? [30002, 105778, 30104] : JSON.parse(localStorage.getItem('manga-ids')!) ); 
+
+  const animeHistory =useRef<number[]>( localStorage.getItem('anime-history')==null ? [] : JSON.parse(localStorage.getItem('anime-history')!) );
+  const mangaHistory =useRef<number[]>( localStorage.getItem('manga-history')==null ? [] : JSON.parse(localStorage.getItem('manga-history')!) );
+
+  const animeQueue =useRef<number[]>( localStorage.getItem('anime-queue')==null ? [] : JSON.parse(localStorage.getItem('anime-queue')!) );
+  const mangaQueue =useRef<number[]>( localStorage.getItem('manga-queue')==null ? [] : JSON.parse(localStorage.getItem('manga-queue')!) );
   
   function toggleMode() { setMode(!mode); document.title = mode ? "AniMatch" : "MangaMatch"; }
+
+  // Memoize idRemFunc using useCallback
+    const idRemFunc = useCallback((idToRem: number) => {
+      if (mode) {
+        setMangaIds((prev: number[]) => prev.filter(id => id !== idToRem));
+        localStorage.setItem('manga-ids', JSON.stringify(mangaIds));
+      } else {
+        setAnimeIds((prev: number[]) => prev.filter(id => id !== idToRem));
+        localStorage.setItem('anime-ids', JSON.stringify(animeIds));
+      }
+    }, [mode, mangaIds, animeIds]); // Empty dependency array means this function is created once
+
+    // Memoize idAddFunc using useCallback
+    const idAddFunc = useCallback((idToAdd: number) => {
+      if (mode) { 
+        setMangaIds((prev: number[]) => [idToAdd, ...prev]);
+        localStorage.setItem('manga-ids', JSON.stringify(mangaIds));
+      } else {
+        setAnimeIds((prev: number[]) => [idToAdd, ...prev]);
+        localStorage.setItem('anime-ids', JSON.stringify(animeIds));
+      }
+    }, [mode, mangaIds, animeIds]); // Empty dependency array means this function is created once
+
 
   function toggleMature() {
     setMature(!hideMature); 
@@ -70,7 +101,9 @@ function App() {
       setEcchi(localStorage.getItem('hideEcchi')!.toLowerCase()==='true' ); 
     }
   }, []);
-  console.log(ids); 
+  //console.log("IDs: " + ids); 
+  //console.log("Queue: " + queue.current.length); 
+  //console.log("History: " + history.current.length); 
   return (
     <>
       <div id='mainCont' className={`${settingsVisible? 'blur-xs' : ''} transition duration-200 flex flex-col h-full `}>
@@ -88,7 +121,7 @@ function App() {
           </h1>
           </div>
           <div id='btnCont' className="font-sans flex flex-row flow-nowrap justify-left ">
-            <button className='text-zinc-200 bg-[#1D2126] dark:bg-[#24272a] px-4 sm:px-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/20 dark:hover:shadow-indigo-500 transition duration-200 active:shadow-md/40 hover:scale-101'>
+            <button className='text-zinc-200 bg-[#1D2126] dark:bg-[#24272a] px-4 sm:px-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/20 dark:hover:shadow-indigo-500 transition duration-200 active:shadow-md/40 hover:scale-101' onClick={()=>alert("This feature is coming soon!")}>
               <div className='flex gap-2 sm:gap-0 flex-row flex-nowrap justify-between items-center m-1'>
                 <p className='font-bold align-middle hidden sm:inline mr-1'>Sign in with AniList</p>
                 <img className='h-8 w-8 object-cover' src={AniListLogo} alt='AniList Logo'></img>
@@ -101,19 +134,25 @@ function App() {
             </button>
           </div>
         </div>
-        <button className='flex gap-2 flex-row flex-nowrap justify-between px-2 items-center h-12 w-12 bg-indigo-500  mx-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/30 transition duration-200 active:shadow-md/40 dark:hover:shadow-indigo-500 hover:scale-101 fixed bottom-10 right-10'>
+        <button className='flex gap-2 flex-row flex-nowrap justify-between px-2 items-center h-12 w-12 bg-indigo-500  mx-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/30 transition duration-200 active:shadow-md/40 dark:hover:shadow-indigo-500 hover:scale-101 fixed bottom-10 right-10' onClick={()=>alert("This feature is coming soon!")}>
             <img className='z-50 h-7 w-7 object-cover' src={UndoIcon} alt='Undo'></img>
         </button>
         <motion.div id='cardArea' className='w-full h-full shrink flex justify-center items-center h-screen relative'>
       <Suspense fallback={<div className='font-header text-xl text-zinc-500'>Loading...</div>}>
-          {ids.map((id: number) => (
+          {(mode?mangaIds:animeIds).map((id: number) => (
               <Card 
               key={id} 
               id={id} 
-              idList={ids} 
-              idSetFunc={(idToRem: number) => {
-                setIds((prev: number[]) => prev.filter(id => id !== idToRem));
-              }} 
+              idList={(mode?mangaIds:animeIds)}
+              animeHistory = {animeHistory}
+              animeQueue = {animeQueue}
+              mangaHistory = {mangaHistory}
+              mangaQueue = {mangaQueue}
+              idRemFunc={idRemFunc}
+              idAddFunc={idAddFunc}
+              hideMature = {hideMature}
+                hideEcchi={hideEcchi}
+                mode={mode}
             />
             ))
             }

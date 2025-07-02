@@ -1,11 +1,20 @@
-import { useEffect, useCallback } from 'react'; 
+import { useEffect, useCallback, useRef } from 'react'; 
+import type { RefObject } from 'react'; 
 import { motion, useAnimation } from "motion/react";
 import { useQuery, gql } from '@apollo/client';
 
 type Props = {
   id: number, 
   idList: number[], 
-  idSetFunc: (idToRem:number)=>void
+  animeQueue: RefObject<number[]>, 
+  mangaQueue: RefObject<number[]>, 
+  animeHistory: RefObject<number[]>,
+  mangaHistory: RefObject<number[]>,
+  idRemFunc: (idToRem:number)=>void,
+  idAddFunc: (idToAdd:number)=>void, 
+  hideMature: boolean, 
+  hideEcchi: boolean, 
+  mode: boolean
 }
 
 /*
@@ -42,11 +51,13 @@ function formatNumber(num: number) {
 }
 
 export default function Card( {
-    id, idList, idSetFunc
+    id, idList, idRemFunc, animeHistory, animeQueue, mangaHistory, mangaQueue, idAddFunc, hideEcchi, hideMature, mode
   } : Props) {
   const animControls = useAnimation();
   const randomDeg = Math.floor(Math.random() * 20) - 10; // -5 to 5 deg
- 
+  const hasSwipedRef = useRef(false);
+
+
   const FETCH_DATA = gql`
     query fetchData($mediaId: Int) {
       Media(id: $mediaId) {
@@ -99,15 +110,39 @@ export default function Card( {
   const { loading, error, data } = useQuery(FETCH_DATA, {variables:{mediaId:id}});
   //console.log(data); 
   
+  const addRec = useCallback (() => {
+    console.log("Unfiltered: " + data.Media.recommendations.nodes.length);
+    let recs: number[] = data.Media.recommendations.nodes.map( (node: {__typename:string, id:number}) => node.id );
+    if (mode) {
+      recs = recs.filter( (id) =>  !((mangaHistory.current.includes(id)) || (mangaQueue.current.includes(id)))  );
+    } else {
+      recs = recs.filter( (id) =>  !((animeHistory.current.includes(id)) || (animeQueue.current.includes(id)))  );
+    }
+    console.log("Filtered: "+recs.length);
+    if (mode) mangaQueue.current.unshift(...recs)
+    else animeQueue.current.unshift(...recs);
+  }, [mode, data, animeHistory, animeQueue, mangaQueue, mangaHistory]);
+
   const offScreen = useCallback( (activeDir: string, sign: number) => {
     if (activeDir == 'x') { 
-      animControls.start( { x:window.innerWidth*sign, opacity:0 } ); 
+      animControls.start( { x:window.innerWidth*sign, opacity:0 } );
+      if (sign>0) addRec();
     }
     else if (activeDir == 'y') {
-      animControls.start( { y:750*sign, opacity:0 } ); 
+      animControls.start( { y:window.innerWidth*sign, opacity:0 } ); 
     }
-    setTimeout(()=>{idSetFunc(id);}, 150);  
-  }, [animControls, id, idSetFunc]);
+    
+    if (mode) mangaHistory.current.push(id);
+    else animeHistory.current.push(id);
+
+    setTimeout(()=>{idRemFunc(id);}, 150);  
+    
+    if (mode) {
+      if (mangaQueue.current.length>0) idAddFunc(mangaQueue.current.pop()!);
+    } else {
+      if (animeQueue.current.length>0) idAddFunc(animeQueue.current.pop()!);
+    }
+  }, [animControls, idAddFunc, animeQueue, mangaQueue, animeHistory, mangaHistory, mode, id, addRec, idRemFunc]);
 
 
   useEffect(() => {
@@ -125,6 +160,40 @@ export default function Card( {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [id, idList, offScreen]);
+
+  useEffect(() => {
+    if (id !== idList[idList.length - 1]) return; // Only top card can auto-swipe
+    if (loading) return;                         // Wait until data finishes loading
+    if (hasSwipedRef.current) return;            // Prevent double swiping
+
+    if (data==null || data?.Media == null) {
+      console.warn("Media not found or null. Skipping:", id);
+      hasSwipedRef.current = true;
+      offScreen('x', -1);
+    } else if (data.Media.isAdult && hideMature) {
+      console.warn("Mature content skipped:", id);
+      hasSwipedRef.current = true;
+      offScreen('x', -1);
+    } else if (
+      hideEcchi &&
+      data.Media.genres.map((genre: string) => genre.toLowerCase()).includes('ecchi')
+    ) {
+      console.warn("Ecchi content skipped:", id);
+      hasSwipedRef.current = true;
+      offScreen('x', -1);
+    } else if ((data.Media.type.toLowerCase()=='anime' && mode==true)||(data.Media.type.toLowerCase()=='manga' && mode==false))  {
+      console.warn("Skipped Incorrect type ", id);
+      if (mode) { mangaHistory.current.unshift(id); }
+      else { animeHistory.current.unshift(id); }
+      hasSwipedRef.current = true;
+      offScreen('x', -1);
+    }
+
+    localStorage.setItem('manga-queue', JSON.stringify(mangaQueue.current));
+    localStorage.setItem('anime-queue', JSON.stringify(animeQueue.current));
+    localStorage.setItem('manga-history', JSON.stringify(mangaHistory.current));
+    localStorage.setItem('anime-history', JSON.stringify(animeHistory.current));
+  }, [id, idList, loading, data, error, hideEcchi, hideMature, offScreen, mode, animeHistory, mangaHistory, animeQueue, mangaQueue]);
 
 
   if (!loading && !error)
@@ -146,7 +215,7 @@ export default function Card( {
                 dragTransition={{ bounceStiffness: 500, bounceDamping: 15 }}
                 dragElastic={1}
                 whileDrag={{ cursor: "grabbing" }}
-               className='w-3/5 max-sm:w-1/2  min-w-[240px] dark:text-zinc-200 bg-zinc-200 dark:bg-[#141112] px-2 py-2 rounded-3xl max-h-7/8 absolute shadow-xl dark:shadow-black-900/30 shadow-black-900 hover:scale-105 transition duration-50 overflow-clip flex flex-col select-none'
+               className='w-3/5 max-sm:w-1/2  min-w-[240px] dark:text-zinc-200 bg-zinc-200 dark:bg-[#141112] ring-zinc-400 dark:ring-zinc-800 ring-3 px-2 py-2 rounded-3xl max-h-7/8 absolute shadow-xl dark:shadow-black-900/30 shadow-black-900 hover:scale-105 transition duration-50 overflow-clip flex flex-col select-none'
                 style={{ transform: `rotate(${randomDeg}deg)`, touchAction: "none" }}>
         <div>
           <img src={data.Media.bannerImage} className="object-cover scale-110 sticky pointer-events-none "></img>
