@@ -102,7 +102,7 @@ function App() {
           </div>
         </div>
         <button className='flex gap-2 flex-row flex-nowrap justify-between px-2 items-center h-12 w-12 bg-indigo-500  mx-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/30 transition duration-200 active:shadow-md/40 dark:hover:shadow-indigo-500 hover:scale-101 fixed bottom-10 right-10'>
-            <img className='h-7 w-7 object-cover' src={UndoIcon} alt='Undo'></img>
+            <img className='z-50 h-7 w-7 object-cover' src={UndoIcon} alt='Undo'></img>
         </button>
         <motion.div id='cardArea' className='w-full h-full shrink flex justify-center items-center h-screen relative'>
       <Suspense fallback={<div className='font-header text-xl text-zinc-500'>Loading...</div>}>
