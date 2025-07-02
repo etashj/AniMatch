@@ -12,13 +12,14 @@ import SettingsIcon from './assets/settings.svg';
 import AniListLogo from './assets/anilist.svg';
 import UndoIcon from './assets/undo.svg';
 
+const ids = [66, 165287, 30104];
+
 function App() {
   const [settingsVisible, setVisible] = useState(false)
   const [theme, setTheme] = useState<Theme>(Theme.System);
   const [hideMature, setMature] = useState( true );
   const [hideEcchi, setEcchi] = useState( true );  
   const [mode, setMode] = useState(false); 
-
   
   function toggleMode() { setMode(!mode); document.title = mode ? "AniMatch" : "MangaMatch"; }
 
@@ -104,10 +105,10 @@ function App() {
             <img className='h-7 w-7 object-cover' src={UndoIcon} alt='Undo'></img>
         </button>
         <motion.div id='cardArea' className='w-full h-full shrink flex justify-center items-center h-screen relative'>
-      <Suspense fallback={<div>Loading...</div>}>
-          <Card id={66} />
-          <Card id={165287} />
-          <Card id={30104} />
+      <Suspense fallback={<div className='font-header text-xl text-zinc-500'>Loading...</div>}>
+          {ids.map((id: number) => (
+              <Card key={id} id={id} />
+            ))}
       </Suspense>
         </motion.div >
       </div>
