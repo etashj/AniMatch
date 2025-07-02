@@ -113,7 +113,7 @@ function App() {
         </motion.div >
       </div>
         <p className='z-50 tracking-wider font-header text-zinc-500 text-lg fixed rotate-270 -left-14 top-1/2 '>not interested :/</p>
-        <p className='z-50 tracking-wider font-header text-zinc-500 text-lg fixed rotate-90 -right-12 top-1/2'>interested :)</p>
+        <p className='z-50 tracking-wider font-header text-zinc-500 text-lg fixed rotate-90 -right-10 top-1/2'>interested :)</p>
       <Suspense fallback={<div>Loading...</div>}>
       <Settings visible={settingsVisible} onClose={() => setTimeout(() => {setVisible(false);}, 100)} theme={theme} setTheme={(theme: Theme) => {applyTheme(theme);}} hideMature={hideMature} hideEcchi={hideEcchi} toggleMature={toggleMature} toggleEcchi={toggleEcchi}/>
       </Suspense>

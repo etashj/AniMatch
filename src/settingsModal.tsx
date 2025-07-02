@@ -2,6 +2,8 @@ import SettingsSwitch from './settingsElems/switch.tsx';
 import ThemeDrop from './settingsElems/themeDrop.tsx'
 import Theme from './settingsElems/theme.tsx';
 
+import { Link } from 'react-router-dom';
+
 type Props = {
   visible: boolean;
   onClose: () => void;
@@ -32,6 +34,14 @@ export default function Settings( {visible, onClose, theme, setTheme, hideMature
           <p className="p-2 rounded-xl ">Hide Mature</p>
           <SettingsSwitch setting={hideMature} toggleFunc={toggleMature}  />
         </div>
+      </div>
+      <div className='flex-row gap-2'>
+        <Link to='/about'>
+          <button className='mx-1 w-1/3 font-bold text-zinc-200 bg-indigo-500 px-2 py-1 rounded-md hover:shadow-lg/20 transition duration-300 active:shadow-sm/40 dark:hover:shadow-indigo-500 hover:scale-101'>about</button>
+        </Link>
+        <Link to='/issue'>
+          <button className='w-1/3 mx-1 font-bold text-zinc-200 bg-indigo-500 px-2 py-1 rounded-md hover:shadow-lg/20 transition duration-300 active:shadow-sm/40 dark:hover:shadow-indigo-500 hover:scale-101'>issue</button>
+        </Link>
       </div>
       <button onClick={onClose} className='w-full font-bold text-zinc-200 bg-indigo-500 px-2 py-1 rounded-b-2xl rounded-t-md hover:shadow-lg/20 transition duration-300 active:shadow-sm/40 dark:hover:shadow-indigo-500 hover:scale-101'>close</button>
     </div>
