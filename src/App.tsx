@@ -12,14 +12,14 @@ import SettingsIcon from './assets/settings.svg';
 import AniListLogo from './assets/anilist.svg';
 import UndoIcon from './assets/undo.svg';
 
-const ids = [66, 165287, 30104];
-
 function App() {
   const [settingsVisible, setVisible] = useState(false)
   const [theme, setTheme] = useState<Theme>(Theme.System);
   const [hideMature, setMature] = useState( true );
   const [hideEcchi, setEcchi] = useState( true );  
   const [mode, setMode] = useState(false); 
+
+  const [ids, setIds] = useState([66, 165287, 30104]); 
   
   function toggleMode() { setMode(!mode); document.title = mode ? "AniMatch" : "MangaMatch"; }
 
@@ -70,7 +70,7 @@ function App() {
       setEcchi(localStorage.getItem('hideEcchi')!.toLowerCase()==='true' ); 
     }
   }, []);
-
+  console.log(ids); 
   return (
     <>
       <div id='mainCont' className={`${settingsVisible? 'blur-xs' : ''} transition duration-200 flex flex-col h-full `}>
@@ -107,13 +107,21 @@ function App() {
         <motion.div id='cardArea' className='w-full h-full shrink flex justify-center items-center h-screen relative'>
       <Suspense fallback={<div className='font-header text-xl text-zinc-500'>Loading...</div>}>
           {ids.map((id: number) => (
-              <Card key={id} id={id} />
-            ))}
+              <Card 
+              key={id} 
+              id={id} 
+              idList={ids} 
+              idSetFunc={(idToRem: number) => {
+                setIds((prev: number[]) => prev.filter(id => id !== idToRem));
+              }} 
+            />
+            ))
+            }
       </Suspense>
         </motion.div >
       </div>
-        <p className='z-50 tracking-wider font-header text-zinc-500 text-lg fixed rotate-270 -left-14 top-1/2 '>not interested :/</p>
-        <p className='z-50 tracking-wider font-header text-zinc-500 text-lg fixed rotate-90 -right-10 top-1/2'>interested :)</p>
+        <p className='z-50 tracking-wider font-header text-zinc-500 text-lg fixed rotate-270 -left-10 top-1/2 '>not interested :/ <br/> ↑</p>
+        <p className='z-50 tracking-wider font-header text-zinc-500 text-lg fixed rotate-90 -right-6 top-1/2'>interested :) <br/>↑</p>
       <Suspense fallback={<div>Loading...</div>}>
       <Settings visible={settingsVisible} onClose={() => setTimeout(() => {setVisible(false);}, 100)} theme={theme} setTheme={(theme: Theme) => {applyTheme(theme);}} hideMature={hideMature} hideEcchi={hideEcchi} toggleMature={toggleMature} toggleEcchi={toggleEcchi}/>
       </Suspense>

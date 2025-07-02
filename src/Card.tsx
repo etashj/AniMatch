@@ -1,8 +1,11 @@
-import { motion, useAnimation } from "motion/react"
+import { useEffect, useCallback } from 'react'; 
+import { motion, useAnimation } from "motion/react";
 import { useQuery, gql } from '@apollo/client';
 
 type Props = {
   id: number, 
+  idList: number[], 
+  idSetFunc: (idToRem:number)=>void
 }
 
 /*
@@ -39,7 +42,7 @@ function formatNumber(num: number) {
 }
 
 export default function Card( {
-    id,
+    id, idList, idSetFunc
   } : Props) {
   const animControls = useAnimation();
   const randomDeg = Math.floor(Math.random() * 20) - 10; // -5 to 5 deg
@@ -95,15 +98,35 @@ export default function Card( {
 
   const { loading, error, data } = useQuery(FETCH_DATA, {variables:{mediaId:id}});
   //console.log(data); 
-
-  function offScreen (activeDir: string, sign: number) {
+  
+  const offScreen = useCallback( (activeDir: string, sign: number) => {
     if (activeDir == 'x') { 
-      animControls.start( { x:750*sign, opacity:0 } ); 
+      animControls.start( { x:window.innerWidth*sign, opacity:0 } ); 
     }
     else if (activeDir == 'y') {
       animControls.start( { y:750*sign, opacity:0 } ); 
     }
-  }
+    setTimeout(()=>{idSetFunc(id);}, 150);  
+  }, [animControls, id, idSetFunc]);
+
+
+  useEffect(() => {
+    // Only allow key control for the top card
+    if (id !== idList[idList.length - 1]) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        offScreen('x', -1);
+      } else if (e.key === 'ArrowRight') {
+        offScreen('x', 1);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [id, idList, offScreen]);
+
+
   if (!loading && !error)
   return (
     <>
@@ -123,7 +146,7 @@ export default function Card( {
                 dragTransition={{ bounceStiffness: 500, bounceDamping: 15 }}
                 dragElastic={1}
                 whileDrag={{ cursor: "grabbing" }}
-               className='w-3/5 max-sm:w-1/2  min-w-[240px] dark:text-zinc-200 bg-zinc-200 dark:bg-[#141112] px-2 py-2 rounded-3xl h-7/8 absolute shadow-xl dark:shadow-black-900/30 shadow-black-900 hover:scale-105 transition duration-50 overflow-clip flex flex-col select-none'
+               className='w-3/5 max-sm:w-1/2  min-w-[240px] dark:text-zinc-200 bg-zinc-200 dark:bg-[#141112] px-2 py-2 rounded-3xl max-h-7/8 absolute shadow-xl dark:shadow-black-900/30 shadow-black-900 hover:scale-105 transition duration-50 overflow-clip flex flex-col select-none'
                 style={{ transform: `rotate(${randomDeg}deg)`, touchAction: "none" }}>
         <div>
           <img src={data.Media.bannerImage} className="object-cover scale-110 sticky pointer-events-none "></img>
