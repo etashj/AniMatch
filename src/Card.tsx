@@ -123,7 +123,7 @@ export default function Card( {
                 dragTransition={{ bounceStiffness: 500, bounceDamping: 15 }}
                 dragElastic={1}
                 whileDrag={{ cursor: "grabbing" }}
-               className='w-3/5 max-w-[600px] min-w-[340px] dark:text-zinc-200 bg-zinc-200 dark:bg-[#141112] px-2 py-2 rounded-3xl h-7/8 absolute shadow-xl dark:shadow-black-900/30 shadow-black-900 hover:scale-105 transition duration-50 overflow-clip flex flex-col select-none'
+               className='w-3/5 max-sm:w-1/2  min-w-[240px] dark:text-zinc-200 bg-zinc-200 dark:bg-[#141112] px-2 py-2 rounded-3xl h-7/8 absolute shadow-xl dark:shadow-black-900/30 shadow-black-900 hover:scale-105 transition duration-50 overflow-clip flex flex-col select-none'
                 style={{ transform: `rotate(${randomDeg}deg)`, touchAction: "none" }}>
         <div>
           <img src={data.Media.bannerImage} className="object-cover scale-110 sticky pointer-events-none "></img>
@@ -134,7 +134,7 @@ export default function Card( {
           <p className = "text-left max-w-5/9 text-[#1D2126] dark:text-zinc-200 mx-3 self-start ">{(data.Media.type) + " • " + (data.Media.endDate.year==null ? "Ongoing" : data.Media.endDate.year) + (data.Media.endDate.year==null ? "" : " • " + (data.Media.chapters==null ? data.Media.episodes+" episodes" : data.Media.chapters + " chapters"))}</p>
           <p className = "text-left max-w-5/9 text-[#1D2126] dark:text-zinc-200 mx-3 self-start ">{"Avg: "+ (data.Media.averageScore) + "% • " + formatNumber(data.Media.popularity)+ " on List"}</p>
         </div>
-        <div className="m-3 text-left text-[#1D2126] dark:text-zinc-200 max-w-5/9 overflow-y-auto">
+        <div className="m-3 text-left text-[#1D2126] dark:text-zinc-200 max-w-5/9 max-sm:text-sm overflow-y-auto">
           <p dangerouslySetInnerHTML={{ __html: data.Media.description}}></p>
         </div>
 
@@ -142,7 +142,7 @@ export default function Card( {
         <div className={`flex flex-col flex-nowrap absolute w-13/32 left-19/32 ${data.Media.bannerImage==null ? 'top-55' : 'top-73'} max-h-1/2 `}>
           <div className='mb-2 flex flex-row flex-wrap'>
               {data.Media.genres.map((genre: string) => (
-                <div key={genre} className="px-1 m-0.5 bg-zinc-300 dark:bg-[#1D2126] rounded-sm text-lg ">
+                <div key={genre} className="px-1 m-0.5 bg-zinc-300 dark:bg-[#1D2126] rounded-sm text-lg max-sm:text-sm">
                   {genre}
                 </div>
               ))}
@@ -150,7 +150,7 @@ export default function Card( {
 
           <div className='flex flex-row flex-wrap overflow-y-auto'>
               {data.Media.tags.map((tag: Tag) => (
-                <div key={tag.name} className="px-1 m-0.5 bg-zinc-300 dark:bg-[#1D2126] rounded-sm text-sm text-zinc-500">
+                <div key={tag.name} className="px-1 m-0.5 bg-zinc-300 dark:bg-[#1D2126] rounded-sm text-sm text-zinc-500 max-sm:text-xs">
                   {tag.name}
                 </div>
               ))}
