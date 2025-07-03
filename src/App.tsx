@@ -135,9 +135,9 @@ function App() {
             </button>
           </div>
         </div>
-        <button className='flex gap-2 flex-row flex-nowrap justify-between px-2 items-center h-12 w-12 bg-indigo-500  mx-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/30 transition duration-200 active:shadow-md/40 dark:hover:shadow-indigo-500 hover:scale-101 fixed bottom-10 right-10' onClick={()=>alert("This feature is coming soon!")}>
+        {/*<button className='flex gap-2 flex-row flex-nowrap justify-between px-2 items-center h-12 w-12 bg-indigo-500  mx-2 rounded-2xl sm:rounded-2xl hover:shadow-xl/30 transition duration-200 active:shadow-md/40 dark:hover:shadow-indigo-500 hover:scale-101 fixed bottom-10 right-10' onClick={()=>alert("This feature is coming soon!")}>
             <img className='z-50 h-7 w-7 object-cover' src={UndoIcon} alt='Undo'></img>
-        </button>
+        </button> */}
         <motion.div id='cardArea' className='w-full h-full shrink flex justify-center items-center h-screen relative'>
           <div className='w-3/5 max-sm:w-1/2  min-w-[240px] dark:text-zinc-200 bg-zinc-200 dark:bg-[#141112] ring-zinc-400 dark:ring-zinc-800 ring-3 px-2 py-2 rounded-3xl max-h-7/8 absolute shadow-xl dark:shadow-black-900/30 shadow-black-900 hover:scale-105 transition duration-50 overflow-clip flex flex-col select-none' style={{  touchAction: "none" }}>Loading...<br/> Loading times may exceed 30s because of the AniList API's degraded state. <br /> Consider reloading the page. <br /> Tip: Clicking the title will link to the official AniList page so you can add the item to your list. </div>
       <Suspense fallback={<div className='font-header text-xl text-zinc-500'>Loading...</div>}>
