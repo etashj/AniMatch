@@ -12,9 +12,6 @@ import SettingsIcon from './assets/settings.svg';
 import AniListLogo from './assets/anilist.svg';
 import UndoIcon from './assets/undo.svg';
 
-import { gql, useLazyQuery } from "@apollo/client";
-
-
 function App() {
   const [settingsVisible, setVisible] = useState(false)
   const [theme, setTheme] = useState<Theme>(Theme.System);
@@ -31,9 +28,6 @@ function App() {
   const animeQueue =useRef<number[]>( localStorage.getItem('anime-queue')==null ? [] : JSON.parse(localStorage.getItem('anime-queue')!) );
   const mangaQueue =useRef<number[]>( localStorage.getItem('manga-queue')==null ? [] : JSON.parse(localStorage.getItem('manga-queue')!) );
   
-  const animeQueueIdx = useRef<number>(0);
-  const mangaQueueIdx = useRef<number>(0);
-
   function toggleMode() { setMode(!mode); document.title = mode ? "AniMatch" : "MangaMatch"; }
 
   // Memoize idRemFunc using useCallback
