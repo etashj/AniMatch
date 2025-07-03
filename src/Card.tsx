@@ -168,6 +168,9 @@ export default function Card( {
 
     if (data==null || data?.Media == null) {
       console.warn("Media not found or null. Skipping:", id);
+      if (error != null && error.cause!=null){ console.log( error.cause.message );
+      if (error.cause.message == 'Load failed') { setTimeout( ()=>{offScreen('x', -1);}, 20000 );  return; }
+      }
       hasSwipedRef.current = true;
       offScreen('x', -1);
     } else if (data.Media.isAdult && hideMature) {
