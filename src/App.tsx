@@ -10,7 +10,7 @@ import { motion } from "motion/react"
 
 import SettingsIcon from './assets/settings.svg';
 import AniListLogo from './assets/anilist.svg';
-import UndoIcon from './assets/undo.svg';
+//import UndoIcon from './assets/undo.svg';
 
 function App() {
   const [settingsVisible, setVisible] = useState(false)
